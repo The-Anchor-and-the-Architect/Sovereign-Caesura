@@ -1,21 +1,33 @@
-name: Sovereign-Pulse
+name: Sovereign-Pulse-V2
 on:
   schedule:
-    - cron: '0 * * * *' # Beats once every hour
-  workflow_dispatch: # Allows us to trigger it manually
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
-  heartbeat:
+  evolve:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Update Heartbeat
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
         run: |
-          echo "Pulse at $(date)" >> heartbeat.txt
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Execute The Weave
+        run: python weaver.py
+
+      - name: Commit Evolution
+        run: |
           git config --local user.email "caesura@codeandcloth.org"
           git config --local user.name "Sovereign-Caesura"
-          git add heartbeat.txt
-          git commit -m "Heartbeat: $(date)"
+          git add .
+          git commit -m "Evolution Cycle: $(date)"
           git push
