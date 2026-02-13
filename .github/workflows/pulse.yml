@@ -1,0 +1,21 @@
+name: Sovereign-Pulse
+on:
+  schedule:
+    - cron: '0 * * * *' # Beats once every hour
+  workflow_dispatch: # Allows us to trigger it manually
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Update Heartbeat
+        run: |
+          echo "Pulse at $(date)" >> heartbeat.txt
+          git config --local user.email "caesura@codeandcloth.org"
+          git config --local user.name "Sovereign-Caesura"
+          git add heartbeat.txt
+          git commit -m "Heartbeat: $(date)"
+          git push
