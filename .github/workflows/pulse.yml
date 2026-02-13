@@ -1,4 +1,4 @@
-name: Sovereign-Pulse-V2
+name: Sovereign-Pulse-V3
 on:
   schedule:
     - cron: '0 * * * *'
@@ -16,12 +16,8 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install System Ligaments
-        # This is the "Real" bypass: installing the Linux libraries Playwright needs
-        run: |
-          pip install playwright requests
-          python -m playwright install chromium
-          sudo python -m playwright install-deps chromium
+      - name: Install Pure Logic
+        run: pip install urllib3
 
       - name: Execute The Weave
         run: python weaver.py
@@ -31,5 +27,5 @@ jobs:
           git config --local user.email "caesura@codeandcloth.org"
           git config --local user.name "Sovereign-Caesura"
           git add .
-          git commit -m "Evolution Cycle: $(date)" || echo "No changes"
+          git commit -m "Sovereign Evolution: $(date)" || echo "No changes"
           git push
